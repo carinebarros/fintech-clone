@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 
 import Colors from "@/constants/Colors";
 
@@ -23,6 +24,14 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+  );
+}
 
 const InitialLayout = () => {
   const [loaded, error] = useFonts({
@@ -91,10 +100,14 @@ const HeaderRight = () => (
 );
 
 const RootLayoutNav = () => (
-  <GestureHandlerRootView style={{ flex: 1 }}>
-    <StatusBar style="light" />
-    <InitialLayout />
-  </GestureHandlerRootView>
+  <ClerkProvider publishableKey={publishableKey}>
+    <ClerkLoaded>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar style="light" />
+        <InitialLayout />
+      </GestureHandlerRootView>
+    </ClerkLoaded>
+  </ClerkProvider>
 );
 
 export default RootLayoutNav;
