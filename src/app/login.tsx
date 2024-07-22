@@ -66,7 +66,7 @@ const Login = () => {
             params: { phone: fullPhoneNumber, signin: "true" },
           });
         } catch (error) {
-          console.error("Sign in error: ", error);
+          console.error("Sign in error: ", JSON.stringify(error, null, 2));
 
           if (
             isClerkAPIResponseError(error) &&
@@ -83,7 +83,7 @@ const Login = () => {
     []
   );
 
-  const onSignIn = (type: SignInType) => signInChannels?.[type];
+  const onSignIn = (type: SignInType) => signInChannels[type]();
 
   return (
     <KeyboardAvoidingView
@@ -132,7 +132,7 @@ const Login = () => {
             label="Continue with email"
             size="default"
             variant="light"
-            icon="logo-google"
+            icon="mail"
             onPress={() => onSignIn(SignInType.Email)}
           />
           <Button
