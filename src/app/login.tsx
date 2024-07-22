@@ -80,7 +80,7 @@ const Login = () => {
       [SignInType.Google]: async () => "Google",
       [SignInType.Apple]: async () => "Apple",
     }),
-    []
+    [countryCode, phoneNumber]
   );
 
   const onSignIn = (type: SignInType) => signInChannels[type]();
