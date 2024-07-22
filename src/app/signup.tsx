@@ -7,7 +7,8 @@ import {
   View,
 } from "react-native";
 import { useMemo, useState } from "react";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { useSignUp } from "@clerk/clerk-expo";
 
 import { defaultStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
@@ -15,6 +16,9 @@ import Colors from "@/constants/Colors";
 import { Button } from "@/components/Button";
 
 const SignUp = () => {
+  const router = useRouter();
+  const { signUp } = useSignUp();
+
   const [countryCode, setCountryCode] = useState("+55");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -28,7 +32,18 @@ const SignUp = () => {
     [phoneNumber]
   );
 
-  const onSignUp = async () => {};
+  const onSignUp = async () => {
+    const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+    try {
+      await signUp?.create({ phoneNumber: fullPhoneNumber });
+      signUp!.preparePhoneNumberVerification();
+
+      router.push(`/verify/${fullPhoneNumber}`);
+    } catch (error) {
+      console.error("Sign up error: ", error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
