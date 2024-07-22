@@ -1,4 +1,5 @@
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -12,8 +13,20 @@ import { defaultStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 
 import { Button } from "@/components/Button";
+import { useRouter } from "expo-router";
+import { isClerkAPIResponseError, useSignIn } from "@clerk/clerk-expo";
+
+enum SignInType {
+  Phone,
+  Email,
+  Google,
+  Apple,
+}
 
 const Login = () => {
+  const router = useRouter();
+  const { signIn } = useSignIn();
+
   const [countryCode, setCountryCode] = useState("+55");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -27,7 +40,50 @@ const Login = () => {
     [phoneNumber]
   );
 
-  const onSignIn = async () => {};
+  const signInChannels = useMemo(
+    () => ({
+      [SignInType.Phone]: async () => {
+        try {
+          const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+          const { supportedFirstFactors } = await signIn!.create({
+            identifier: fullPhoneNumber,
+          });
+
+          const firstPhoneFactor = supportedFirstFactors.find(
+            (factor) => factor.strategy === "phone_code"
+          );
+
+          const { phoneNumberId } = firstPhoneFactor!;
+
+          await signIn!.prepareFirstFactor({
+            strategy: "phone_code",
+            phoneNumberId,
+          });
+
+          router.push({
+            pathname: "/verify/[phone]",
+            params: { phone: fullPhoneNumber, signin: "true" },
+          });
+        } catch (error) {
+          console.error("Sign in error: ", error);
+
+          if (
+            isClerkAPIResponseError(error) &&
+            error.errors[0].code === "form_identifier_not_found"
+          ) {
+            Alert.alert("Error", error.errors[0].message);
+          }
+        }
+      },
+      [SignInType.Email]: async () => "Email",
+      [SignInType.Google]: async () => "Google",
+      [SignInType.Apple]: async () => "Apple",
+    }),
+    []
+  );
+
+  const onSignIn = (type: SignInType) => signInChannels?.[type];
 
   return (
     <KeyboardAvoidingView
@@ -62,7 +118,7 @@ const Login = () => {
           label="Continue"
           size="default"
           variant={buttonVariant}
-          onPress={onSignIn}
+          onPress={() => onSignIn(SignInType.Phone)}
         />
 
         <View style={styles.divisorContainer}>
@@ -71,12 +127,29 @@ const Login = () => {
           <View style={[styles.divisorLine, styles.fullWidth]} />
         </View>
 
-        <Button
-          label="Continue with email"
-          size="default"
-          variant="light"
-          icon="mail"
-        />
+        <View style={styles.buttonsContainer}>
+          <Button
+            label="Continue with email"
+            size="default"
+            variant="light"
+            icon="logo-google"
+            onPress={() => onSignIn(SignInType.Email)}
+          />
+          <Button
+            label="Continue with Google"
+            size="default"
+            variant="light"
+            icon="logo-google"
+            onPress={() => onSignIn(SignInType.Google)}
+          />
+          <Button
+            label="Continue with Apple"
+            size="default"
+            variant="light"
+            icon="logo-apple"
+            onPress={() => onSignIn(SignInType.Apple)}
+          />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -113,6 +186,9 @@ const styles = StyleSheet.create({
   divisorText: {
     color: Colors.gray,
     fontSize: 20,
+  },
+  buttonsContainer: {
+    gap: 20,
   },
 });
 

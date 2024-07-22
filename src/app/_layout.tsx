@@ -56,7 +56,7 @@ const InitialLayout = () => {
     console.log("isSignedIn", isSignedIn);
   }, [isSignedIn]);
 
-  if (!loaded) {
+  if (!loaded || !isLoaded) {
     return null;
   }
 
