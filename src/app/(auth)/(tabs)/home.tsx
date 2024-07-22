@@ -8,6 +8,7 @@ import Dropdown from "@/components/Dropdown";
 import RoundButton from "@/components/RoundButton";
 import { defaultStyles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
+import WidgetList from "@/components/SortableList/WidgetList";
 
 const Page = () => {
   const { balance, clearTransactions, runTransaction, transactions } =
@@ -33,7 +34,6 @@ const Page = () => {
           <Text style={styles.balance}>{balance()}</Text>
         </View>
       </View>
-
       <View style={styles.actionRow}>
         <RoundButton text="Add money" icon="add" onPress={onAddMoney} />
         <RoundButton
@@ -44,7 +44,6 @@ const Page = () => {
         <RoundButton text="Details" icon="list" onPress={onAddMoney} />
         <Dropdown />
       </View>
-
       <Text style={defaultStyles.sectionHeader}>Transactions</Text>
       <View style={styles.transactions}>
         {transactions.length === 0 && (
@@ -76,6 +75,8 @@ const Page = () => {
           </View>
         ))}
       </View>
+      <Text style={defaultStyles.sectionHeader}>Widgets</Text>
+      <WidgetList />
     </ScrollView>
   );
 };
