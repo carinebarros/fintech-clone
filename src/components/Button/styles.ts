@@ -7,15 +7,23 @@ type Variants = {
 };
 
 export const styles = StyleSheet.create({
-  button: {
+  buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 40,
   },
+  button: {
+    flexDirection: "row",
+    gap: 16,
+    alignItems: "center",
+  },
   buttonText: {
     textAlign: "center",
     fontWeight: "600",
+  },
+  fullWidth: {
+    flex: 1,
   },
 });
 
@@ -59,27 +67,37 @@ export const sizes = StyleSheet.create({
   },
 });
 
+export const textColor = {
+  default: Colors.white,
+  dark: Colors.white,
+  light: Colors.dark,
+  secondary: Colors.white,
+  destructive: Colors.white,
+  ghost: Colors.black,
+  link: Colors.primary,
+};
+
 export const buttonTextVariants = StyleSheet.create({
   default: {
-    color: Colors.white,
+    color: textColor.default,
   },
   dark: {
-    color: Colors.white,
+    color: textColor.dark,
   },
   light: {
-    color: Colors.dark,
+    color: textColor.light,
   },
   secondary: {
-    color: Colors.gray,
+    color: textColor.secondary,
   },
   destructive: {
-    color: Colors.white,
+    color: textColor.destructive,
   },
   ghost: {
-    color: Colors.primary,
+    color: textColor.ghost,
   },
   link: {
-    color: Colors.primary,
+    color: textColor.link,
     textDecorationLine: "underline",
   },
 });

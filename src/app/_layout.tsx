@@ -58,7 +58,16 @@ const InitialLayout = () => {
           headerRight: HeaderRight,
         }}
       />
-      <Stack.Screen name="login" />
+      <Stack.Screen
+        name="login"
+        options={{
+          title: "",
+          headerBackTitle: "",
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: HeaderLeft,
+          headerRight: HeaderRight,
+        }}
+      />
     </Stack>
   );
 };
@@ -73,17 +82,13 @@ const HeaderLeft = () => {
   );
 };
 
-const HeaderRight = () => {
-  const router = useRouter();
-
-  return (
-    <Link href="/help" asChild>
-      <TouchableOpacity>
-        <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
-      </TouchableOpacity>
-    </Link>
-  );
-};
+const HeaderRight = () => (
+  <Link href="/help" asChild>
+    <TouchableOpacity>
+      <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
+    </TouchableOpacity>
+  </Link>
+);
 
 const RootLayoutNav = () => (
   <GestureHandlerRootView style={{ flex: 1 }}>

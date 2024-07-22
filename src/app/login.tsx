@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import { useMemo, useState } from "react";
-import { Link } from "expo-router";
 
 import { defaultStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
@@ -32,26 +31,26 @@ const Login = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.fullWidth}
       behavior="padding"
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
       <View style={defaultStyles.container}>
         <Text style={defaultStyles.header}>Welcome back!</Text>
         <Text style={defaultStyles.descriptionText}>
-          Enter your phone number. We will send you a confirmation code there
+          Enter the phone number associated with your account
         </Text>
 
         <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, { flex: 0.15 }]}
+            style={[styles.input, styles.countryCode]}
             placeholder="Country code"
             placeholderTextColor={Colors.gray}
             value={countryCode}
             onChangeText={setCountryCode}
           />
           <TextInput
-            style={[styles.input, { flex: 1 }]}
+            style={[styles.input, styles.fullWidth]}
             placeholder="Mobile number"
             keyboardType="numeric"
             value={phoneNumber}
@@ -65,12 +64,28 @@ const Login = () => {
           variant={buttonVariant}
           onPress={onSignIn}
         />
+
+        <View style={styles.divisorContainer}>
+          <View style={[styles.divisorLine, styles.fullWidth]} />
+          <Text style={styles.divisorText}>or</Text>
+          <View style={[styles.divisorLine, styles.fullWidth]} />
+        </View>
+
+        <Button
+          label="Continue with email"
+          size="default"
+          variant="light"
+          icon="mail"
+        />
       </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  fullWidth: {
+    flex: 1,
+  },
   inputContainer: {
     flexDirection: "row",
     gap: 10,
@@ -81,6 +96,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: Colors.lightGray,
     borderRadius: 16,
+  },
+  countryCode: {
+    flex: 0.15,
+  },
+  divisorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+    marginVertical: 20,
+  },
+  divisorLine: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.gray,
+  },
+  divisorText: {
+    color: Colors.gray,
+    fontSize: 20,
   },
 });
 

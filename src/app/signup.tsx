@@ -15,7 +15,7 @@ import Colors from "@/constants/Colors";
 import { Button } from "@/components/Button";
 
 const SignUp = () => {
-  const [countryCode, setCountryCode] = useState("");
+  const [countryCode, setCountryCode] = useState("+55");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const keyboardVerticalOffset = useMemo(
@@ -32,7 +32,7 @@ const SignUp = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.fullWidth}
       behavior="padding"
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
@@ -44,14 +44,14 @@ const SignUp = () => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, { flex: 0.15 }]}
+            style={[styles.input, styles.countryCode]}
             placeholder="Country code"
             placeholderTextColor={Colors.gray}
             value={countryCode}
             onChangeText={setCountryCode}
           />
           <TextInput
-            style={[styles.input, { flex: 1 }]}
+            style={[styles.input, styles.fullWidth]}
             placeholder="Mobile number"
             keyboardType="numeric"
             value={phoneNumber}
@@ -67,7 +67,7 @@ const SignUp = () => {
           />
         </Link>
 
-        <View style={{ flex: 1 }} />
+        <View style={styles.fullWidth} />
 
         <Button
           label="Sign up"
@@ -81,16 +81,22 @@ const SignUp = () => {
 };
 
 const styles = StyleSheet.create({
+  fullWidth: {
+    flex: 1,
+  },
   inputContainer: {
-    marginVertical: 40,
     flexDirection: "row",
+    gap: 10,
+    marginVertical: 40,
   },
   input: {
-    backgroundColor: Colors.lightGray,
     padding: 20,
-    borderRadius: 16,
     fontSize: 20,
-    marginRight: 10,
+    backgroundColor: Colors.lightGray,
+    borderRadius: 16,
+  },
+  countryCode: {
+    flex: 0.15,
   },
 });
 
