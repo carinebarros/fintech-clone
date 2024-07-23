@@ -17,6 +17,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-menu/menu": "^1.1.2",
     "@react-navigation/native": "^6.0.2",
+    "@tanstack/react-query": "^5.51.11",
     "expo": "~51.0.21",
     "expo-asset": "^10.0.10",
     "expo-auth-session": "^5.5.2",

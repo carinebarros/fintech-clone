@@ -24,19 +24,21 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
+      ["expo-router", {
+        "origin": "https://fintech.carinebarros.com"
+      }],
       "expo-asset",
       "expo-secure-store",
       ["expo-build-properties",         {
         "android": {
-          "compileSdkVersion": 33,
-          "targetSdkVersion": 33,
+          "compileSdkVersion": 34,
+          "targetSdkVersion": 34,
           "minSdkVersion": 23,
-          "buildToolsVersion": "33.0.0",
+          "buildToolsVersion": "34.0.0",
           "kotlinVersion": "1.6.20"
         }
       }]

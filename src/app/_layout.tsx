@@ -9,8 +9,39 @@ import { Text, TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Colors from "@/constants/Colors";
+
+const queryClient = new QueryClient();
+
+import * as SecureStore from "expo-secure-store";
+
+// Cache the Clerk JWT
+export const tokenCache = {
+  async getToken(key: string) {
+    try {
+      const item = await SecureStore.getItemAsync(key);
+      if (item) {
+        console.log(`${key} was used 🔐 \n`);
+      } else {
+        console.log("No values stored under key: " + key);
+      }
+      return item;
+    } catch (error) {
+      console.error("SecureStore get item error: ", error);
+      await SecureStore.deleteItemAsync(key);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,7 +92,7 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === "(auth)";
 
     if (isSignedIn && !inAuthGroup) {
-      router.replace("/(auth)/(tabs)/home");
+      router.replace("/(auth)/(tabs)/crypto");
     }
   }, [isLoaded, isSignedIn, pathname, segments]);
 
@@ -134,10 +165,12 @@ const HeaderRight = () => (
 const RootLayoutNav = () => (
   <ClerkProvider publishableKey={publishableKey}>
     <ClerkLoaded>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="light" />
-        <InitialLayout />
-      </GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar style="light" />
+          <InitialLayout />
+        </GestureHandlerRootView>
+      </QueryClientProvider>
     </ClerkLoaded>
   </ClerkProvider>
 );
