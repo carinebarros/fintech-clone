@@ -140,6 +140,16 @@ const InitialLayout = () => {
         }}
       />
       <Stack.Screen name="(auth)/(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(auth)/crypto/[id]"
+        options={{
+          title: "",
+          headerLeft: HeaderLeft,
+          headerRight: HeaderRight,
+          headerLargeTitle: true,
+          headerTransparent: true,
+        }}
+      />
     </Stack>
   );
 };
