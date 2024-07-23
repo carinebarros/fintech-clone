@@ -58,6 +58,8 @@ const Layout = () => (
       options={{
         title: "Crypto",
         tabBarIcon: CryptoIcon,
+        header: Header,
+        headerTransparent: true,
       }}
     />
   </Tabs>
