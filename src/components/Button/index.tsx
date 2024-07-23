@@ -25,7 +25,7 @@ interface ButtonProps
     | "destructive"
     | "ghost"
     | "link";
-  size: "default" | "sm" | "lg";
+  size?: "default" | "sm" | "lg";
   fullWidth?: boolean;
 }
 
@@ -37,7 +37,7 @@ const Button = forwardRef(
       className,
       icon,
       variant = "default",
-      size,
+      size = "default",
       fullWidth,
       ...props
     }: ButtonProps,
